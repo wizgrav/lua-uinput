@@ -35,13 +35,13 @@ static int press(lua_State *L){
 	V->ev.code = code;
 	V->ev.value = 1;
 	lua_pushinteger(L,write(V->fd, &V->ev, sizeof(V->ev)));
-	memset(&V->ev, 0, sizeof(struct input_event));
-	 V->ev.type = EV_SYN;
-            V->ev.code = 0;
-            V->ev.value = 0;
-            lua_pushinteger(L,write(V->fd, &V->ev, sizeof(V->ev)));
-	
-	return 2;
+	memset(&ev, 0, sizeof(struct input_event));
+            ev.type = EV_SYN;
+            ev.code = 0;
+            ev.value = 0;
+            if(write(fd, &ev, sizeof(struct input_event)) < 0)
+                die("error: write");
+	return 1;
 }
 
 static int release(lua_State *L){
@@ -53,13 +53,13 @@ static int release(lua_State *L){
 	V->ev.code = code;
 	V->ev.value = 0;
 	lua_pushinteger(L,write(V->fd, &V->ev, sizeof(V->ev)));
-	memset(&V->ev, 0, sizeof(struct input_event));
-	    V->ev.type = EV_SYN;
-            V->ev.code = 0;
-            V->ev.value = 0;
-            lua_pushinteger(L,write(V->fd, &V->ev, sizeof(V->ev)));
-	
-	return 2;
+	memset(&ev, 0, sizeof(struct input_event));
+            ev.type = EV_SYN;
+            ev.code = 0;
+            ev.value = 0;
+            if(write(fd, &ev, sizeof(struct input_event)) < 0)
+                die("error: write");
+	return 1;
 }
 
 
